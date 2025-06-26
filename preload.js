@@ -18,6 +18,24 @@ function adicionarProfessor(nome, disciplina, telefone){
     return ipcRenderer.invoke('adicionar-professor', nome, disciplina, telefone)
 }
 
+// Funções de disciplina
+
+function buscarDisciplinas() {
+    return ipcRenderer.invoke('buscar-disciplinas')
+}
+
+function excluirDisciplina(id) {
+    return ipcRenderer.invoke('deletar-disciplina', id)
+}
+
+function alterarDisciplina(id, id_professor, nome) {
+    return ipcRenderer.invoke('alterar-disciplina', id, id_professor, nome)
+}
+
+function adicionarDisciplina(nome, id_professor) {
+    return ipcRenderer.invoke('adicionar-disciplina', nome, id_professor)
+}
+
 // Funções de nota
 
 function buscarNota(){
@@ -54,6 +72,12 @@ function adicionarAluno(nome, idade, cpf) {
     return ipcRenderer.invoke('adicionar-aluno', nome, idade, cpf)
 }
 
+// Funções de login
+
+function validarLogin(nome, sennha){
+    return ipcRenderer.invoke('validar-login', nome, sennha)
+}
+
 contextBridge.exposeInMainWorld('funcaoAPI',
     
     {
@@ -70,7 +94,14 @@ contextBridge.exposeInMainWorld('funcaoAPI',
         buscarAlunos:buscarAlunos,
         excluirAluno:excluirAluno,
         alterarAluno:alterarAluno,
-        adicionarAluno:adicionarAluno
+        adicionarAluno:adicionarAluno,
+        
+        buscarDisciplinas:buscarDisciplinas,
+        excluirDisciplina:excluirDisciplina,
+        alterarDisciplina:alterarDisciplina,
+        adicionarDisciplina:adicionarDisciplina,
+        
+        validarLogin: validarLogin
     }
 )
 
@@ -86,10 +117,25 @@ function abrirAluno(){
     ipcRenderer.send('abrir-aluno')
 }
 
+function abrirDisciplina(){
+    ipcRenderer.send('abrir-disciplina')
+}
+
+function abrirJanelaPrincipal(){
+    ipcRenderer.send('abrir-JanelaPrincipal')
+}
+
+function abrirJanelaAluno(){
+    ipcRenderer.send('abrir-janelaAluno')
+}
+
 contextBridge.exposeInMainWorld('janelaAPI',
     {
         abrirProfessor:abrirProfessor,
         abrirNota:abrirNota,
-        abrirAluno:abrirAluno
+        abrirAluno:abrirAluno,
+        abrirDisciplina:abrirDisciplina,
+        abrirJanelaPrincipal: abrirJanelaPrincipal,
+        abrirJanelaAluno: abrirJanelaAluno
     }
 )

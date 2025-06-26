@@ -1,10 +1,15 @@
 const { ipcMain } = require('electron')
 
+// Importar funções dos arquivos banco de dados que possuem a query
 const {buscarProfessores, deletarProfessor, alterarProfessor, adicionarProfessor} = require ('./professor/professorDB')
 const {buscarNota, deletarNota, alterarNota, adicionarNota} = require('./nota/notaDB')
 const {buscarAlunos, deletarAluno, alterarAluno, adicionarAluno} = require ('./aluno/alunoDB')
-const { modalAbrirProfessor, modalAbrirNota, modalAbrirAluno } = require('./janelaModal')
+const {buscarDisciplinas, deletarDisciplina, alterarDisciplina, adicionarDisciplina} = require('./disciplina/disciplinaDB')
+const {validarLogin} = require('./login/loginDB')
+const { modalAbrirProfessor, modalAbrirNota, modalAbrirAluno, modalAbrirDisciplina } = require('./janelaModal')
+const { createMainWindow, createMainWindowUser } = require('./janelaPrincipal')
 
+// Dar uma chamada as funções
 function registrarProfessorHandler(){
     ipcMain.handle('buscar-professores', buscarProfessores)
     ipcMain.handle('deletar-professor', deletarProfessor)
@@ -26,16 +31,32 @@ function registrarAlunoHandler(){
     ipcMain.handle('adicionar-aluno', adicionarAluno)
 }
 
+function registrarDisciplinaHandler(){
+    ipcMain.handle('buscar-disciplinas', buscarDisciplinas)
+    ipcMain.handle('deletar-disciplina', deletarDisciplina)
+    ipcMain.handle('alterar-disciplina', alterarDisciplina)
+    ipcMain.handle('adicionar-disciplina', adicionarDisciplina)
+}
+
+function registrarLoginHandler(){
+    ipcMain.handle('validar-login', validarLogin)
+}
+
 function registrarJanelas(){
     ipcMain.on('abrir-professor', modalAbrirProfessor)
     ipcMain.on('abrir-nota', modalAbrirNota)
     ipcMain.on('abrir-aluno', modalAbrirAluno)
+    ipcMain.on('abrir-disciplina', modalAbrirDisciplina)
+    ipcMain.on('abrir-JanelaPrincipal', createMainWindow)
+    ipcMain.on('abrir-janelaAluno', createMainWindowUser)
 }
 
 function registrarListerners(){
     registrarProfessorHandler()
     registrarNotaHandler()
     registrarAlunoHandler()
+    registrarDisciplinaHandler()
+    registrarLoginHandler()
     registrarJanelas()
 }
 module.exports = {

@@ -40,10 +40,10 @@ function modalAbrirAluno(event) {
     }
 }
 
-function modalAbrirCurso(event){
+function modalAbrirDisciplina(event){
     let mainWindow = getMainWindow()
     if(mainWindow){
-        criarJanelaModal(mainWindow, "./src/curso/curso.html")
+        criarJanelaModal(mainWindow, "./src/disciplina/disciplina.html")
     }
     else{
         console.log('erro')
@@ -70,9 +70,11 @@ function modalAbrirMateria(event){
     }
 }
 
+
 module.exports = {
     criarJanelaModal,
     modalAbrirProfessor,
     modalAbrirNota,
-    modalAbrirAluno
+    modalAbrirAluno,
+    modalAbrirDisciplina
 }

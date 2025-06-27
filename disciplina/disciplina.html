@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de disciplinas</title>
+    <link rel="stylesheet" href="disciplina.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+    <button id="btn-limpar">
+        <i data-lucide="circle-plus"></i>
+    </button>
+    <table id="disciplina-table">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Professor</th>
+            </tr>
+        </thead>
+        <tbody id="disciplinaTableDados">
+        </tbody>
+    </table>
+
+
+    <!--modal-->
+    <div id="modal">
+        <h3>Edite os dados da disciplina:</h3>
+
+        <label>ID: <input type="text" id="disciplina-id" readonly />
+        </label>
+
+        <label>Disciplina: <input type="text" id="disciplina-nome">
+        </label>
+
+        <label>Professor: 
+        <select id="disciplina-professor">
+        </select>
+        </label>
+
+            <button id="btn-salvar">
+                <i data-lucide="save"></i>
+            </button>
+            <button id="btn-excluir">
+                <i data-lucide="trash-2"></i>
+            </button>
+    </div>
+
+
+    <script src="disciplina.js"></script>
+</body>
+
+</html>

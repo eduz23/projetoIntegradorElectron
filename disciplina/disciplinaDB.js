@@ -1,28 +1,32 @@
 const db = require('../db');
 
-async function buscarMateria() {
-    let resultado = await db.query('select * from disciplina order by id');
+async function buscarDisciplinas() {
+    let resultado = await db.query(`
+    SELECT disciplina.id, disciplina.nome, disciplina.id_professor, professor.nome AS professor
+    FROM disciplina
+    JOIN professor ON professor.id = disciplina.id_professor
+    ORDER BY professor.id`)
     return resultado.rows;
 }
 
-async function deletarMateria(event, id){
+async function deletarDisciplina(event, id){
     let resultado = await db.query('delete from disciplina where id = $1', [id]);
     return resultado.rows;
 }
 
-async function alterarMateria(event, id, nome, id_professor) {
-    let resultado = await db.query('update materias set nome = $1, id_professor = $2,  = $3 where id = $4', [nome, descricao, id_curso, id]);
+async function alterarDisciplina(event, id, id_professor, nome) {
+    let resultado = await db.query('update disciplina set id_professor = $1, nome = $2 where id = $3', [id_professor, nome, id]);
     return resultado.rows;
 }
 
-async function adicionarMateria(event, nome, descricao, id_curso) {
-    let resultado = await db.query('insert into materias (nome, descricao, id_curso) values ($1, $2, $3)', [nome, descricao, id_curso]);
+async function adicionarDisciplina(event, nome, id_professor) {
+    let resultado = await db.query('insert into disciplina (nome, id_professor) values ($1, $2)', [nome, id_professor]);
     return resultado.rows;
 }
 
 module.exports = {
-    buscarMateria,
-    deletarMateria,
-    alterarMateria,
-    adicionarMateria
+    buscarDisciplinas,
+    deletarDisciplina,
+    alterarDisciplina,
+    adicionarDisciplina
 }

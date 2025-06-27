@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f8ff;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+}
+
+h2 {
+    color: #1a73e8;
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background-color: #e2edff;
+    color: #1a1a1a;
+}
+
+tr:hover {
+    background-color: #f0f8ff;
+}
+
+input {
+    padding: 8px;
+    margin: 8px 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    padding: 6px 12px;
+    margin: 5px;
+    font-size: 0.95em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button[onclick*="editarAluno"] {
+    background-color: #fbbc04; /* amarelo */
+    color: white;
+}
+
+button[onclick*="excluirAluno"] {
+    background-color: #ea4335; /* vermelho */
+    color: white;
+}

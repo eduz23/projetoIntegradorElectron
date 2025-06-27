@@ -54,6 +54,10 @@ function adicionarNota(id_aluno, id_disciplina, nota){
     return ipcRenderer.invoke('adicionar-nota', id_aluno, id_disciplina, nota)
 }
 
+function filtrarNota(filtro){
+    return ipcRenderer.invoke('filtrar-nota', filtro)
+}
+
 // Funções para aluno
 
 function buscarAlunos() {
@@ -70,6 +74,10 @@ function alterarAluno(id, nome, idade, cpf) {
 
 function adicionarAluno(nome, idade, cpf) {
     return ipcRenderer.invoke('adicionar-aluno', nome, idade, cpf)
+}
+
+function filtrarAluno(filtro){
+    return ipcRenderer.invoke('filtrar-aluno', filtro)
 }
 
 // Funções de login
@@ -90,12 +98,14 @@ contextBridge.exposeInMainWorld('funcaoAPI',
         excluirNota:excluirNota,
         alterarNota:alterarNota,
         adicionarNota:adicionarNota,
+        filtrarNota:filtrarNota,
 
         buscarAlunos:buscarAlunos,
         excluirAluno:excluirAluno,
         alterarAluno:alterarAluno,
         adicionarAluno:adicionarAluno,
-        
+        filtrarAluno:filtrarAluno,
+
         buscarDisciplinas:buscarDisciplinas,
         excluirDisciplina:excluirDisciplina,
         alterarDisciplina:alterarDisciplina,

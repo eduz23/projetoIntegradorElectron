@@ -2,8 +2,8 @@ const { ipcMain } = require('electron')
 
 // Importar funções dos arquivos banco de dados que possuem a query
 const {buscarProfessores, deletarProfessor, alterarProfessor, adicionarProfessor} = require ('./professor/professorDB')
-const {buscarNota, deletarNota, alterarNota, adicionarNota} = require('./nota/notaDB')
-const {buscarAlunos, deletarAluno, alterarAluno, adicionarAluno} = require ('./aluno/alunoDB')
+const {buscarNota, deletarNota, alterarNota, adicionarNota, filtrarNota} = require('./nota/notaDB')
+const {buscarAlunos, deletarAluno, alterarAluno, adicionarAluno, filtrarAluno} = require ('./aluno/alunoDB')
 const {buscarDisciplinas, deletarDisciplina, alterarDisciplina, adicionarDisciplina} = require('./disciplina/disciplinaDB')
 const {validarLogin} = require('./login/loginDB')
 const { modalAbrirProfessor, modalAbrirNota, modalAbrirAluno, modalAbrirDisciplina } = require('./janelaModal')
@@ -22,6 +22,7 @@ function registrarNotaHandler(){
     ipcMain.handle('deletar-nota', deletarNota)
     ipcMain.handle('alterar-nota', alterarNota)
     ipcMain.handle('adicionar-nota', adicionarNota)
+    ipcMain.handle('filtrar-nota', filtrarNota)
 }
 
 function registrarAlunoHandler(){
@@ -29,6 +30,7 @@ function registrarAlunoHandler(){
     ipcMain.handle('deletar-alunos', deletarAluno)
     ipcMain.handle('alterar-aluno', alterarAluno)
     ipcMain.handle('adicionar-aluno', adicionarAluno)
+    ipcMain.handle('filtrar-aluno', filtrarAluno)
 }
 
 function registrarDisciplinaHandler(){

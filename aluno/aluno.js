@@ -4,9 +4,14 @@ const modalAlunoIdade = document.getElementById('aluno-idade');
 const modalAlunoCpf = document.getElementById('aluno-cpf')
 const modalIDAluno = document.getElementById('aluno-id');
 
+const botaoFiltrar = document.getElementById('btn-filtrar')
 const botaoExcluir = document.getElementById('btn-excluir');
 const botaoAlterar = document.getElementById('btn-salvar');
 const botaoLimpar = document.getElementById('btn-limpar');
+const filtro = document.getElementById('filtro')
+
+//botao filtrar
+botaoFiltrar.addEventListener('click', filtrarAlunos)
 
 //botao salvar ou adicionar
 botaoAlterar.addEventListener('click', adicionarAlterarAluno)
@@ -24,21 +29,20 @@ function mostrarDetalhes(id, nome, idade, cpf) {
     modalAlunoCpf.value = cpf
 }
 
-function limpar(){
+function limpar() {
     modalIDAluno.value = ""
     modalNomeAluno.value = ""
     modalAlunoIdade.value = ""
     modalAlunoCpf.value = ""
-
 }
 
 
 
-function adicionarAlterarAluno(){
-    if(modalIDAluno.value != ''){
+function adicionarAlterarAluno() {
+    if (modalIDAluno.value != '') {
         alterarAluno()
     }
-    else{
+    else {
         adicionarAluno()
     }
 }
@@ -50,16 +54,15 @@ async function alterarAluno() {
 }
 
 
-async function adicionarAluno(){
+async function adicionarAluno() {
     await window.funcaoAPI.adicionarAluno(modalNomeAluno.value, modalAlunoIdade.value, modalAlunoCpf.value)
     carregarAlunos()
     limpar()
 }
- 
+
 
 async function excluirAluno() {
     const id = modalIDAluno.value;
-
     await window.funcaoAPI.excluirAluno(id);
 
     //após deleção atualiza a lista de alunos
@@ -84,6 +87,13 @@ async function carregarAlunos() {
 
     lucide.createIcons(); // renderiza os ícones do Lucide
 
+
+    let tipoUser = localStorage.getItem('perfil')
+
+    if (tipoUser !== 'adm') {
+        botaoExcluir.disabled = true
+        botaoAlterar.disabled = true
+    }
 }
 
 function criarLinhaAluno(aluno) {
@@ -111,7 +121,7 @@ function criarLinhaAluno(aluno) {
     const celulaBotao = document.createElement("td");
     const botao = document.createElement("button");
     botao.addEventListener("click",
-        function () { mostrarDetalhes(aluno.nome, aluno.idade, aluno.cpf, aluno.id) }
+        function () { mostrarDetalhes(aluno.id, aluno.nome, aluno.idade, aluno.cpf) }
     );
     botao.textContent = '';
 
@@ -130,7 +140,26 @@ function criarLinhaAluno(aluno) {
 
 }
 
+async function filtrarAlunos() {
+    const nome = filtro.value.trim()
 
+    let alunos
+
+    if (nome === '') {
+        alunos = await window.funcaoAPI.buscarAlunos()
+    } else {
+        alunos = await window.funcaoAPI.filtrarAluno(nome)
+    }
+
+    tabelaAluno.innerHTML = ""
+    alunos.forEach(criarLinhaAluno)
+
+    if (!alunos.length) {
+        tabelaAluno.textContent = "sem dados"
+    }
+
+    lucide.createIcons()
+}
 
 
 carregarAlunos()

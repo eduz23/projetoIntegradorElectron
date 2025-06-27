@@ -22,10 +22,15 @@ async function adicionarAluno(event, nome, idade, cpf){
     return resultado.rows
 }
 
+async function filtrarAluno(event, filtro){
+    const resultado = await db.query('select * from aluno where nome ilike $1', [`%${filtro}%`])
+    return resultado.rows
+}
 
 module.exports = {
     buscarAlunos,
     deletarAluno,
     alterarAluno,
-    adicionarAluno
+    adicionarAluno,
+    filtrarAluno
 }

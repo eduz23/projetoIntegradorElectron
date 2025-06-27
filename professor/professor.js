@@ -93,6 +93,12 @@ async function carregarProfessores() {
 
     lucide.createIcons(); // renderiza os ícones do Lucide
 
+    let tipoUser = localStorage.getItem('perfil')
+
+    if (tipoUser !== 'adm') {
+        botaoExcluir.disabled = true
+        botaoAlterar.disabled = true
+    }
 }
 
 function criarLinhaProfessor(professor) {

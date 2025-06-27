@@ -4,20 +4,23 @@ const tabelaNotas = document.getElementById('dadosNotaTable');
 const modalIdNota = document.getElementById('nota-id');
 const modalNomeAluno = document.getElementById('aluno-id');
 const modalNomeDisciplina = document.getElementById('disciplina-id');
-const modalNota = document.getElementById('nota-id')
+const modalNota = document.getElementById('notaFinal-id')
+const filtro = document.getElementById('filtro')
 
+const botaoFiltrar = document.getElementById('btn-filtrar')
 const botaoLimpar = document.getElementById('btn-limpar');
 const botaoExcluir = document.getElementById('btn-excluir');
 const botaoSalvar = document.getElementById('btn-salvar');
 
+botaoFiltrar.addEventListener('click', filtrarNota)
 botaoExcluir.addEventListener('click', deletarNota);
 botaoLimpar.addEventListener('click', limpar);
 botaoSalvar.addEventListener('click', adicionarAlterarNota);
 
-function mostrarDetalhes(id, Aluno, Disciplina, nota){
+function mostrarDetalhes(id, id_aluno, id_disciplina, nota){
     modalIdNota.value = id;
-    modalNomeAluno.value = Aluno;
-    modalNomeDisciplina.value = Disciplina
+    modalNomeAluno.value = id_aluno;
+    modalNomeDisciplina.value = id_disciplina
     modalNota.value = nota;
 }
 
@@ -29,16 +32,15 @@ function limpar(){
 }
 
 function criarLinhaNota(nota){
-
     const linha = document.createElement('tr');
 
     const celulaAluno = document.createElement('td');
-    celulaAluno.textContent = nota.aluno;
+    celulaAluno.textContent = nota.aluno; // nome do aluno
     linha.appendChild(celulaAluno);
 
-    const celulaProfessor = document.createElement('td');
-    celulaProfessor.textContent = nota.disciplina;
-    linha.appendChild(celulaProfessor);
+    const celulaDisciplina = document.createElement('td');
+    celulaDisciplina.textContent = nota.disciplina; // nome da disciplina
+    linha.appendChild(celulaDisciplina);
 
     const celulaNota = document.createElement('td');
     celulaNota.textContent = nota.nota;
@@ -46,10 +48,12 @@ function criarLinhaNota(nota){
 
     const celulaBotao = document.createElement('td');
     const botao = document.createElement("button");
+
     botao.addEventListener("click",
-        function () { mostrarDetalhes(nota.id, nota.aluno, nota.disciplina, nota.nota); }
+        function () {
+            mostrarDetalhes(nota.id, nota.id_aluno, nota.id_disciplina, nota.nota);
+        }
     );
-    botao.textContent = '';
 
     const icone = document.createElement("i");
     icone.setAttribute("data-lucide", "edit");
@@ -61,6 +65,7 @@ function criarLinhaNota(nota){
     tabelaNotas.appendChild(linha);
 }
 
+
 async function carregarNotas(){
     
     const listaNota = await window.funcaoAPI.buscarNota()
@@ -68,13 +73,19 @@ async function carregarNotas(){
 
     listaNota.forEach(criarLinhaNota)
 
-    if (!listaNota.length > 0) {
+    if (!listaNota.length === 0) {
         tabelaNotas.textContent = "sem dados"
     }
 
-    carregarAlunos();
-    carregarDisciplinas();
+    await carregarAlunos();
+    await carregarDisciplinas();
     lucide.createIcons();
+
+    let local = localStorage.getItem('perfil')
+    if(local !== 'adm'){
+        botaoSalvar.disabled = true
+        botaoExcluir.disabled = true
+    }
 }
 
 async function adicionarNota(){
@@ -85,8 +96,8 @@ async function adicionarNota(){
 
 async function alterarNota() {
     await window.funcaoAPI.alterarNota(modalIdNota.value, modalNomeAluno.value, modalNomeDisciplina.value, modalNota.value)
-    limpar()
     carregarNotas()
+    limpar()
 }
 
 async function deletarNota(){
@@ -107,6 +118,28 @@ function adicionarAlterarNota(){
     }
 }
 
+async function filtrarNota() {
+    const nome = filtro.value.trim()
+
+    let nota;
+
+    if(nome === ''){
+        nota = await window.funcaoAPI.buscarNota()
+    }
+    else{
+        nota = await window.funcaoAPI.filtrarNota(nome)
+    }
+
+    tabelaNotas.innerHTML = ''
+    console.log(nota)
+    nota.forEach(criarLinhaNota)
+
+    if(!nota.length){
+        tabelaNotas.textContent = 'Sem dados'
+    }
+
+    lucide.createIcons()
+}
 
 // Função para mostrar detalhes do aluno no select
 function mostrarDetalhesAluno(aluno){
@@ -123,7 +156,7 @@ async function carregarAlunos() {
     modalNomeAluno.innerHTML = ''
     let listaAlunos = await window.funcaoAPI.buscarAlunos()
     listaAlunos.forEach(mostrarDetalhesAluno)
-    console.log(mostrarDetalhes)
+    console.log(listaAlunos)
 }
 
 // Função para mostrar detalhes da matéria no select
@@ -132,15 +165,15 @@ function mostrarDetalhesDisciplina(disciplina){
 
     option.value = disciplina.id
     option.textContent = disciplina.nome
-    
+
     modalNomeDisciplina.appendChild(option)
 }
 
 async function carregarDisciplinas() {
     modalNomeDisciplina.innerHTML = ''
-    let listaMaterias = await window.funcaoAPI.buscarDisciplina()
-    listaMaterias.forEach(mostrarDetalhesMateria)
-    console.log(mostrarDetalhes)
+    let listaMaterias = await window.funcaoAPI.buscarDisciplinas()
+    listaMaterias.forEach(mostrarDetalhesDisciplina)
+    console.log(listaMaterias)
 }
 
 carregarNotas();

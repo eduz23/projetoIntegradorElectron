@@ -2,7 +2,7 @@ const { ipcMain } = require('electron')
 
 // Importar funções dos arquivos banco de dados que possuem a query
 const {buscarProfessores, deletarProfessor, alterarProfessor, adicionarProfessor} = require ('./professor/professorDB')
-const {buscarNota, deletarNota, alterarNota, adicionarNota, filtrarNota} = require('./nota/notaDB')
+const {buscarNota, deletarNota, alterarNota, adicionarNota, filtrarNota, calcularMedia} = require('./nota/notaDB')
 const {buscarAlunos, deletarAluno, alterarAluno, adicionarAluno, filtrarAluno} = require ('./aluno/alunoDB')
 const {buscarDisciplinas, deletarDisciplina, alterarDisciplina, adicionarDisciplina} = require('./disciplina/disciplinaDB')
 const {validarLogin} = require('./login/loginDB')
@@ -23,6 +23,7 @@ function registrarNotaHandler(){
     ipcMain.handle('alterar-nota', alterarNota)
     ipcMain.handle('adicionar-nota', adicionarNota)
     ipcMain.handle('filtrar-nota', filtrarNota)
+    ipcMain.handle('calcular-nota', calcularMedia)    
 }
 
 function registrarAlunoHandler(){

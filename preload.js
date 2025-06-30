@@ -58,6 +58,10 @@ function filtrarNota(filtro){
     return ipcRenderer.invoke('filtrar-nota', filtro)
 }
 
+function calcularMedia(){
+    return ipcRenderer.invoke('calcular-nota')
+}
+
 // Funções para aluno
 
 function buscarAlunos() {
@@ -99,6 +103,7 @@ contextBridge.exposeInMainWorld('funcaoAPI',
         alterarNota:alterarNota,
         adicionarNota:adicionarNota,
         filtrarNota:filtrarNota,
+        calcularMedia:calcularMedia,
 
         buscarAlunos:buscarAlunos,
         excluirAluno:excluirAluno,

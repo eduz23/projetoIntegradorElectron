@@ -30,6 +30,7 @@ function createMainWindow() {
         width: 1000,
         height: 1000,
         webPreferences: {
+            autoHideMenuBar: true,
             preload: path.join(__dirname, 'preload.js'),
         }
     });

@@ -6,12 +6,16 @@ const modalNomeAluno = document.getElementById('aluno-id');
 const modalNomeDisciplina = document.getElementById('disciplina-id');
 const modalNota = document.getElementById('notaFinal-id')
 const filtro = document.getElementById('filtro')
+const mensagemMedia = document.getElementById('msgResultado')
+const mensagemConclusao = document.getElementById('msgConclusao')
 
+const botaoCalcular = document.getElementById('btn-calcular')
 const botaoFiltrar = document.getElementById('btn-filtrar')
 const botaoLimpar = document.getElementById('btn-limpar');
 const botaoExcluir = document.getElementById('btn-excluir');
 const botaoSalvar = document.getElementById('btn-salvar');
 
+botaoCalcular.addEventListener('click', calcularMedia)
 botaoFiltrar.addEventListener('click', filtrarNota)
 botaoExcluir.addEventListener('click', deletarNota);
 botaoLimpar.addEventListener('click', limpar);
@@ -92,12 +96,14 @@ async function adicionarNota(){
     await window.funcaoAPI.adicionarNota(modalNomeAluno.value, modalNomeDisciplina.value, modalNota.value)
     limpar()
     carregarNotas()
+    mensagemConclusao.textContent = 'Nota adicionada com sucesso!'
 }
 
 async function alterarNota() {
     await window.funcaoAPI.alterarNota(modalIdNota.value, modalNomeAluno.value, modalNomeDisciplina.value, modalNota.value)
     carregarNotas()
     limpar()
+    mensagemConclusao.textContent = 'Nota alterada com sucesso!'
 }
 
 async function deletarNota(){
@@ -106,6 +112,7 @@ async function deletarNota(){
     await window.funcaoAPI.excluirNota(id)
     limpar()
     carregarNotas()
+    mensagemConclusao.textContent = 'Nota deletada com sucesso!'
 }
 
 function adicionarAlterarNota(){
@@ -117,6 +124,10 @@ function adicionarAlterarNota(){
         adicionarNota()
     }
 }
+
+let notasFiltradas;
+
+// Função para filtrar notas
 
 async function filtrarNota() {
     const nome = filtro.value.trim()
@@ -130,6 +141,8 @@ async function filtrarNota() {
         nota = await window.funcaoAPI.filtrarNota(nome)
     }
 
+    notasFiltradas = nota
+
     tabelaNotas.innerHTML = ''
     console.log(nota)
     nota.forEach(criarLinhaNota)
@@ -139,6 +152,25 @@ async function filtrarNota() {
     }
 
     lucide.createIcons()
+}
+
+// Função para caclular média do aluno com a funcao de filtrar
+
+function calcularMedia() {
+    if (!Array.isArray(notasFiltradas) || notasFiltradas.length === 0) {
+        mensagemMedia.textContent = 'Filtre um aluno primeiro para calcular a média.'
+        return;
+    }
+
+    let soma = 0;
+    notasFiltradas.forEach(n => {
+        soma += parseFloat(n.nota);
+    });
+
+    const media = soma / notasFiltradas.length;
+    const nomeAluno = notasFiltradas[0].aluno
+
+    mensagemMedia.textContent = `Média do aluno ${nomeAluno} é ${media.toFixed(1)}`;
 }
 
 // Função para mostrar detalhes do aluno no select

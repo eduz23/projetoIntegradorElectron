@@ -1,54 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="nota.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!DOCTYPE html>
+    <html lang="pt-br">
 
-    <title>Pagina de notas</title>
-</head>
-<body>
-    <button id="btn-limpar">
-        <i data-lucide = "circle-plus"></i>
-    </button>
-    
-    <label> <input type="text" id="filtro" placeholder="Pesquisar nome do aluno">
-    </label>
-    <button id="btn-filtrar">
-        <i data-lucide="search"></i>
-    </button>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="nota.css">
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <table id="notaTable">
-        <thead>
-            <tr>
-                <th>Aluno</th>
-                <th>Disciplina</th>
-                <th>Nota</th>
-            </tr>
-        </thead>
-        <tbody id="dadosNotaTable"></tbody>
-    </table>
+        <!-- Ícones Lucide -->
+        <script src="https://unpkg.com/lucide@latest"></script>
 
-    <div id="modalNotas">
-        <h3>Edite os dados de nota:</h3>
+        <!-- jQuery e Select2 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-        <label>Id: <input type="text" id="nota-id" readonly></label>
+        <title>Pagina de notas</title>
+    </head>
 
-        <label>Aluno: <select id="aluno-id"></select>
-        </label>
+    <body>
+        <button id="btn-limpar">
+            <i data-lucide="circle-plus"></i>
+        </button>
 
-        <label>Disciplina: <select id="disciplina-id"></select> 
-        </label>
+        <label for="filtro">Cliente:</label>
+        <select id="filtro" style="width: 100%;"></select> <br>
 
-        <label>Nota: <input type="text" id="notaFinal-id"> 
-        </label>
+        <button id="btn-filtrar">
+            <i data-lucide="search"></i>
+        </button>
 
-        <button id="btn-salvar"> <i data-lucide="save"></i></button>
-        <button id="btn-excluir"> <i data-lucide="trash-2"></i></button>
-    </div>
 
-    <script src="nota.js"></script>
+        <button id="btn-calcular">
+            <i data-lucide="calculator"></i>
+        </button>
 
-</body>
-</html>
+        <h4 id="msgResultado"></h4>
+
+        <table id="notaTable">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Disciplina</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody id="dadosNotaTable"></tbody>
+        </table>
+
+        <div id="modalNotas">
+            <h3>Edite os dados de nota:</h3>
+
+            <h4 id="msgConclusao"></h4>
+
+            <label>Id: <input type="text" id="nota-id" readonly></label>
+            <br>
+
+            <label>Aluno: <select id="aluno-id"></select>
+            </label>
+            <br>
+
+            <label>Disciplina: <select id="disciplina-id"></select>
+            </label>
+            <br>
+
+            <label>Nota: <input type="text" id="notaFinal-id">
+            </label>
+            <br>
+
+            <button id="btn-salvar"> <i data-lucide="save"></i></button>
+            <button id="btn-excluir"> <i data-lucide="trash-2"></i></button>
+        </div>
+
+        <script src="nota.js"></script>
+
+    </body>
+
+    </html>

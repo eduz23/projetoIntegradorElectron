@@ -44,7 +44,22 @@ async function filtrarNota(event, filtro) {
         JOIN aluno ON nota.id_aluno = aluno.id 
         JOIN disciplina ON nota.id_disciplina = disciplina.id
         where aluno.nome ilike $1`, [`%${filtro}%`])
+
     return result.rows
+}
+
+async function calcularMedia(nome) {
+        let resultado = await db.query(`
+            SELECT 
+                aluno.nome AS aluno,
+                ROUND(AVG(nota.nota), 1) AS media
+            FROM nota
+            JOIN aluno ON nota.id_aluno = aluno.id
+            WHERE aluno.nome ILIKE $1
+            GROUP BY aluno.nome
+        `, [`%${nome}%`])
+
+        return resultado.rows
 }
 
 module.exports = {
@@ -52,5 +67,6 @@ module.exports = {
     deletarNota,
     alterarNota,
     adicionarNota,
-    filtrarNota
+    filtrarNota,
+    calcularMedia
 }
